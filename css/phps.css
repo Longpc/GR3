@@ -166,7 +166,7 @@ body, html {
 	
 .phps-t-encapsed-and-whitespace,
 .phps-t-constant-encapsed-string
-	{color: #DD0000;}
+	{color: #FF0000;}
 
 .phps-t-inline-html
 	{color: #000000;}

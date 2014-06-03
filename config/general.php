@@ -19,7 +19,7 @@
 		exit;
 	}
 	define('MAXTRACE', 30);					// maximum of parameter
-	define('WARNFILES', 50);				// maximum files number for scan
+	define('WARNFILES', 100);				// maximum files number for scan
 	define('BASEDIR', '');					// default directory shown
 	define('PHPDOC', 'http://php.net/');	// PHP documentation link
 	define('MAX_ARRAY_ELEMENTS', 50);		// maximum array(1,2,3,4,...) elements to be indexed

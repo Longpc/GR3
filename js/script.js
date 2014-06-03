@@ -6,7 +6,19 @@ function scanAnimation(height, idprefix)
 	var div = document.getElementById(idprefix+'ned');
 	div.style.height = height+"px";
 }
-
+function hide(tag)
+{
+	if(document.getElementById(tag).style.display != "none")
+	{
+		document.getElementById(tag).style.display="none";
+		document.getElementById("pic"+tag).className='plusico';
+	}
+	else
+	{
+		document.getElementById(tag).style.display="block";
+		document.getElementById("pic"+tag).className='minusico';
+	}
+}
 
 function handleResponse(idprefix) {
 	if (client.readyState != 4 && client.readyState != 3)
@@ -401,100 +413,7 @@ function openCodeViewer(hoveritem, file, lines)
 }
 
 
-function restoreCanvas(canvas, id)
-{
-	document.getElementById("canvas"+id).style.display='none';
-	document.getElementById(canvas).style.display='block';
-	document.getElementById(canvas+'save').value='save graph';
-	var onC='saveCanvas("'+canvas+'", '+id+')'; 
-	document.getElementById(canvas+'save').onclick = new Function(onC);
-}
-	
-/* DRAG WINDOW */	
-	
-var dragobjekt = null;
-var dragx = 0;
-var dragy = 0;
-var posx = 0;
-var posy = 0;
 
-function draginit() {
-  document.onmousemove = drag;
-  document.onmouseup = dragstop;
-}
-
-function dragstart(id) {
-  dragobjekt = document.getElementById("window"+id);
-  dragx = posx - dragobjekt.offsetLeft;
-  dragy = posy - dragobjekt.offsetTop;
-}
-
-function dragstop() {
-
-dragobjekt=null;
-if(document.getElementById("scrollcode") != null)
-scroller();
-}
-
-function drag(ereignis) {
-  posx = document.all ? window.event.clientX : ereignis.pageX;
-  posy = document.all ? window.event.clientY : ereignis.pageY;
-  if(dragobjekt != null) {
-    dragobjekt.style.left = (posx - dragx) + "px";
-    dragobjekt.style.top = (posy - dragy) + "px";
-  }
-}		
-
-/* RESIZE WINDOW */
-
-var curWidth = 0;
-var curHeight = 0;
-var curX = 0;
-var curY = 0;
-var newX = 0;
-var newY = 0;
-var mouseButtonPos = "up";
-var windowid = 1;
-
-function resizeStart(e, id)
-{
-	windowid = id;
-	curEvent = ((typeof event == "undefined")? e: event);
-	mouseButtonPos = "down";	
-	curX = curEvent.clientX;
-	curY = curEvent.clientY;
-	
-	var tempWidth = document.getElementById("window"+id).style.width;
-	var tempHeight = document.getElementById("window"+id).style.height;
-
-	var widthArray = tempWidth.split("p");
-	curWidth = parseInt(widthArray[0]);
-	var heightArray=tempHeight.split("p");
-	curHeight=parseInt(heightArray[0]);
-}
-
-function getPos(e)
-{
-	if( mouseButtonPos == "down" )
-	{
-		curEvent = ((typeof event == "undefined")? e: event);
-		newY = curEvent.clientY;
-		newX = curEvent.clientX;
-		var pxMoveY = parseInt(newY - curY);
-		var pxMoveX = parseInt(newX - curX);
-
-		var newWidth = parseInt(curWidth + pxMoveX);
-		var newHeight = parseInt(curHeight + pxMoveY);
-
-		newWidth = ((newWidth < 200)? 200: newWidth);
-		newHeight=(newHeight<5?5:newHeight);
-
-		document.getElementById("window"+windowid).style.width = newWidth + "px";
-		if(windowid == 1)
-			document.getElementById("windowcontent1").style.width = newWidth-84 + "px";
-		document.getElementById("window"+windowid).style.height = newHeight + "px";
-	}
-}
 
 
 var myData = Array();

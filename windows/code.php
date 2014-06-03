@@ -58,7 +58,7 @@ include('../config/general.php');
 					}	
 					else if($tokens[$i][0] === T_STRING && $tokens[$i+1] === '(' && $tokens[$i-2][0] !== T_FUNCTION)
 					{
-						$text.= 'onmouseover="mouseFunction(\''.strtolower($tokens[$i][1]).'\', this)" onmouseout="this.style.textDecoration=\'none\'" ';
+						//$text.= 'onmouseover="mouseFunction(\''.strtolower($tokens[$i][1]).'\', this)" onmouseout="this.style.textDecoration=\'none\'" ';
 						$text.= 'onclick="openFunction(\''.strtolower($tokens[$i][1])."','$line_nr');\" ";
 					}
 					$text.= 'class="phps-'.str_replace('_', '-', strtolower(token_name($tokens[$i][0]))).'" ';

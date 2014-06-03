@@ -456,7 +456,7 @@ class Tokenizer
 						
 						if(($i-$f)<0)
 						{
-							addError('Could not find opening parenthesis in ternary operator (1).', array_slice($this->tokens, $i-5, 10), $this->tokens[$i+1][2], $this->filename);
+							addError('Err(1).', array_slice($this->tokens, $i-5, 10), $this->tokens[$i+1][2], $this->filename);
 							break;	
 						}
 					}
@@ -496,7 +496,7 @@ class Tokenizer
 							
 							if(($i-$f)<0 || $this->tokens[$i - $f] === ';')
 							{
-								addError('Could not find opening parenthesis in ternary operator (2).', array_slice($this->tokens, $i-8, 6), $this->tokens[$i+1][2], $this->filename);
+								addError('Err(2).', array_slice($this->tokens, $i-8, 6), $this->tokens[$i+1][2], $this->filename);
 								break;	
 							}
 						}

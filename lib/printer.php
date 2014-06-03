@@ -327,18 +327,18 @@
 				}	
 				else if(count($output) == 1)
 				{
-					echo '<div style="margin-left:30px;color:#FFFFFF">Nothing vulnerable found.</div>';
+					echo '<div style="margin-left:30px;color:#000000">Nothing vulnerable found.</div>';
 				}
 			}
 			while(next($output));
 		}
 		else if(count($GLOBALS['scanned_files']) > 0)
 		{
-			echo '<div style="margin-left:30px;color:#FFFFFF">Nothing vulnerable found. </div>';
+			echo '<div style="margin-left:30px;color:#000000">Nothing vulnerable found. </div>';
 		}
 		else
 		{
-			echo '<div style="margin-left:30px;color:#FFFFFF">Nothing to scan. Please check your path/file name.</div>';
+			echo '<div style="margin-left:30px;color:#000000">Nothing to scan. Please check your path/file name.</div>';
 		}
 		
 	}
@@ -421,11 +421,24 @@
 	// build list of all entry points (user input)
 	function createUserinputList($user_input)
 	{
+		//TODO OK
 		if(!empty($user_input))
 		{
 			ksort($user_input);
-			echo '<table><tr>type[parameter]<br></tr>';
-			echo 'FOr view all input var of user<br>';
+			echo '<table><tr><th align="left">type[parameter]</th><th align="left">line</th></tr>';
+			foreach($user_input as $input_name => $file)
+			{
+				$finds = array();
+				foreach($file as $file_name => $lines)
+				{
+					foreach($lines as $line)
+					{
+						$finds[] = '<span class="funclistline" title="'.$file_name.'" onClick="openCodeViewer(4, \''.addslashes($file_name)."', '$line')\">$line</span>\n";
+					}
+				}
+				echo "<tr><td nowrap>$input_name</td><td nowrap>",implode(',',array_unique($finds)),'</td></tr>';
+
+			}
 			echo '</table>';
 		} else
 		{

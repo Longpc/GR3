@@ -60,7 +60,7 @@
 			{
 				case 'xss':		$scan_functions = $F_XSS;
 								break;
-				case 'sql_inj': break;
+				case 'sql_inj': $scan_functions = $F_DATABASE;		break;
 				//No more case for SQL Inj..vv.vv.vv
 				}
 			}	
@@ -114,7 +114,7 @@
 	<div id="return" class="return" onClick="returnLastCode()">&crarr; return</div>
 </div>
 <!--For view help content-->
-<div id="window2" name="window" style="width:600px; height:250px;">
+<div id="window2" name="window" style="width:600px; height:600px;">
 	<div class="windowtitlebar">
 		<div id="windowtitle2" onClick="toTop(2)" onmousedown="dragstart(2)" class="windowtitle"></div>
 		<input type="button" class="closebutton" value="x" onClick="closeWindow(2)" title="close" />
@@ -122,7 +122,7 @@
 	<div id="windowcontent2" class="windowcontent"></div>
 </div>
 <!--For view user functions-->
-<div id="window3" name="window" style="width:300px; height:300px;">
+<div id="window3" name="window" style="width:300px; height:400px;">
 	<div class="funclisttitlebar">
 		<div id="windowtitle3" onClick="toTop(3)" onmousedown="dragstart(3)" class="funclisttitle">
 		user defined functions and calls
@@ -137,7 +137,7 @@
 	
 </div>
 <!--For view all input var 's name-->
-<div id="window4" name="window" style="width:300px; height:300px;">
+<div id="window4" name="window" style="width:300px; height:400px;">
 	<div class="funclisttitlebar">
 		<div id="windowtitle4" onClick="toTop(4)" onmousedown="dragstart(4)" class="funclisttitle">
 		user input
@@ -151,7 +151,7 @@
 	</div>
 </div>
 <!--For view scanned files as tree-->
-<div id="window5" name="window" style="width:300px; height:300px;">
+<div id="window5" name="window" style="width:300px; height:400px;">
 	<div class="funclisttitlebar">
 		<div id="windowtitle4" onClick="toTop(5)" onmousedown="dragstart(5)" class="funclisttitle">
 		scanned files and includes

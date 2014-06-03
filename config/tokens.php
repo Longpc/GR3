@@ -14,9 +14,8 @@ final class Tokens
 		//T_CLOSE_TAG
 	);
 	
-	// code blocks that should be ignored as requirement
+	
 	public static $T_LOOP_CONTROL = array(
-		//T_DO, // removed, because DO..WHILE is rewritten to WHILE
 		T_WHILE,
 		T_FOR,
 		T_FOREACH

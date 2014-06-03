@@ -49,7 +49,23 @@
 		'htmlentities',
 		'htmlspecialchars'
 	);	
-	
+	// securing functions for SQLI
+	$F_SECURING_SQL = array(
+		'addslashes',
+		'dbx_escape_string',
+		'db2_escape_string',
+		'ingres_escape_string',
+		'maxdb_escape_string',
+		'maxdb_real_escape_string',
+		'mysql_escape_string',
+		'mysql_real_escape_string',
+		'mysqli_escape_string',
+		'mysqli_real_escape_string',
+		'pg_escape_string',	
+		'pg_escape_bytea',
+		'sqlite_escape_string',
+		'sqlite_udf_encode_binary'
+	);	
 	
 	// all specific securings
 	$F_SECURES_ALL = array_merge(
