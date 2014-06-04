@@ -5,17 +5,16 @@
 
 	include('config/general.php');			// general settings
 	include('config/sources.php');			// tainted variables and functions
-	include('config/tokens.php');			// tokens for lexical analysis
-	include('config/securing.php');			// securing functions
+	include('config/tokens.php');			// tokens for lexical analysis pharse
+	include('config/securing.php');			// securing functions define
 	include('config/sinks.php');			// sensitive sinks
-	include('config/info.php');				// interesting functions
 	
-	include('lib/constructer.php'); 		// classes	
+	include('lib/constructer.php'); 		// classes	and construc
 	include('lib/filer.php');				// read files from dirs and subdirs
 	include('lib/tokenizer.php');			// prepare and fix token list
 	include('lib/analyzer.php');			// string analyzers
 	include('lib/scanner.php');				// provides class for scan
-	include('lib/printer.php');				// output scan result
+	include('lib/printer.php');				// print output scan result
 		
 	###############################  MAIN  ####################################
 	

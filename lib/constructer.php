@@ -54,7 +54,7 @@
 		}
 	}
 	
-	// used to store new finds
+	// used to store new finds in tree value
 	class VulnTreeNode
 	{
 		public $id;

@@ -183,7 +183,7 @@
 	}	
 		
 	
-	// traced parameter output top-down
+	// traced parameter output top-down and print it in output block
 	function traverseTopDown($tree, $start=true, $lines=array()) 
 	{
 		if($start) echo '<ul>';
@@ -198,13 +198,7 @@
 		if(!isset($lines[$tree->line]))
 		{
 			echo '<li';
-			switch($tree->marker) 
-			{
-				case 1: echo ' class="userinput"'; break;
-				case 2: echo ' class="validated"'; break;
-				case 3: echo ' class="functioninput"'; break;
-				case 4: echo ' class="persistent"'; break;
-			}
+			//TODO highlight line have function tainted
 			echo '>',$tree->value,'</li>',"\n";
 			// add to array to ignore next time
 			$lines[$tree->line] = 1;
@@ -215,24 +209,6 @@
 		return $lines;
 	}	
 
-	// requirements output
-	function dependenciesTraverse($tree) 
-	{
-		if(!empty($tree->dependencies))
-		{
-			echo '<ul><li><span class="requires">requires:</span>';
-
-			foreach ($tree->dependencies as $linenr=>$dependency) 
-			{
-				if(!empty($dependency))
-				{
-					echo '<ul><li>'.highlightline($dependency, '', $linenr).'</li></ul>';
-				}
-			}
-
-			echo '</li></ul>',"\n";
-		}
-	}
 	
 	// check for vulns found in file
 	function fileHasVulns($blocks)
@@ -295,7 +271,7 @@
 										(int)!empty($tree->cookie),'\')"></div>',"\n";
 									}
 									
-									
+									//var_dump($tree); //TODO DIE
 									// $tree->title
 									echo '</td><td><span class="vulntitle">',$tree->title,'</span>',
 									'<div class="code" id="',key($output),$tree->lines[0],'">',"\n";
@@ -304,7 +280,7 @@
 										traverseTopDown($tree);
 
 										echo '<ul><li>',"\n";
-									dependenciesTraverse($tree);
+									//dependenciesTraverse($tree);
 									echo '</li></ul>',"\n",	'</div>',"\n", '</td></tr></table></div>',"\n";
 								}
 							}	
@@ -348,35 +324,6 @@
 	{
 		if(!empty($user_functions_offset))
 		{
-			ksort($user_functions_offset);
-			if($GLOBALS['file_amount'] <= WARNFILES)
-				$js = 'graph2 = new Graph(document.getElementById("functioncanvas"));'."\n";
-			else
-				$js = 'canvas = document.getElementById("functioncanvas");ctx = canvas.getContext("2d");ctx.fillStyle="#ff0000";ctx.fillText(" (>'.WARNFILES.').", 20, 30);';
-			$x=20;
-			$y=50;
-			$i=0;
-			
-			if($GLOBALS['file_amount'] <= WARNFILES)
-			{
-				// create JS graph elements
-				foreach($user_functions_offset as $func_name => $info)
-				{				
-					if($func_name !== '__main__')
-					{
-						$x = ($i%4==0) ? $x=20 : $x=$x+160;
-						$y = ($i%4==0) ? $y=$y+70 : $y=$y;
-						$i++;
-						
-						$func_varname = str_replace('::', '', $func_name);
-						
-						$js.= "var e$func_varname = graph2.addElement(pageTemplate, { x:$x, y:$y }, '".addslashes($func_name)."( )', '', '".(isset($info[5]) ? $info[5] : 0)."', '".(isset($info[6]) ? $info[6] : 0)."', 0);\n";
-					} else
-					{	
-						$js.='var e__main__ = graph2.addElement(pageTemplate, { x:260, y:20 }, "__main__", "", "'.(isset($info[5]) ? $info[5] : 0).'", "'.(isset($info[6]) ? $info[6] : 0).'", 0);'."\n";
-					}	
-				}
-			}
 			
 			echo '<div id="functionlistdiv"><table><tr><th align="left">declaration</th><th align="left">calls</th></tr>';
 			foreach($user_functions_offset as $func_name => $info)
@@ -397,20 +344,8 @@
 				}
 				echo implode(',',array_unique($calls)).'</td></tr>';
 				
-				if(isset($info[4]) && $GLOBALS['file_amount'] <= WARNFILES)
-				{
-					foreach($info[4] as $call)
-					{
-						if(!is_array($call))
-						{
-							$color = (isset($info[4][$call])) ? '#F00' : '#000';
-							$js.="try{graph2.addConnection(e$call.getConnector(\"links\"), e$func_name.getConnector(\"parents\"), '$color');}catch(e){}\n";
-						}	
-					}
-				}
+				
 			}
-			if($GLOBALS['file_amount'] <= WARNFILES)
-				$js.='graph2.update();';
 			echo '</table></div>',"\n<div id='functiongraph_code' style='display:none'>$js</div>\n";
 		} else
 		{
@@ -451,80 +386,8 @@
 	{
 		if(!empty($files))
 		{
-			if($GLOBALS['file_amount'] <= WARNFILES)
-				$js = 'graph = new Graph(document.getElementById("filecanvas"));'."\n";
-			else	
-				$js = 'canvas = document.getElementById("filecanvas");ctx = canvas.getContext("2d");ctx.fillStyle="#ff0000";ctx.fillText("Graphs have been disabled for a high file amount (>'.WARNFILES.').", 20, 30);';
+			
 	
-			// get vuln files
-			$vulnfiles = array();
-			foreach($GLOBALS['output'] as $filename => $blocks)
-			{		
-				foreach($blocks as $block)
-				{
-					if($block->vuln)
-					{
-						$vulnfiles[] = $block->treenodes[0]->filename;
-					}	
-				}	
-			}	
-
-			// sort files by "include weight" (main files on top, included files bottom)
-			$mainfiles = array();
-			$incfiles = array();
-			foreach($files as $file => $includes)
-			{
-				$mainfiles[] = realpath($file);
-				if(!empty($includes))
-				{
-					foreach($includes as $include)
-					{
-						$incfiles[] = realpath($include);
-					}
-				}	
-			}
-			$elements = array_unique(array_merge(array_diff($mainfiles,$incfiles), array('__break__'), $incfiles));
-			$x=20;
-			$y=-50;
-			$i=0;
-			$style = 'pageTemplate';
-
-			// add JS elements
-			foreach($elements as $file)
-			{
-				if($file !== '__break__')
-				{
-					$x = ($i%4==0) ? $x=20 : $x=$x+160;
-					$y = ($i%4==0) ? $y=$y+70 : $y=$y;
-					$i++;
-					
-					// leave space for legend symbols
-					if($i==3)
-						$i++;
-					
-					$file = realpath($file);
-
-					$filename = is_dir($_POST['loc']) ? str_replace(realpath($_POST['loc']), '', $file) : str_replace(realpath(str_replace(basename($_POST['loc']),'', $_POST['loc'])),'',$file);
-					$varname = preg_replace('/[^A-Za-z0-9]/', '', $filename); 
-
-					$userinput = 0;
-					foreach($GLOBALS['user_input'] as $inputname)
-					{
-						if(isset($inputname[$file]))
-							$userinput++;
-					}			
-					
-					if($GLOBALS['file_amount'] <= WARNFILES)
-						$js.= "var e$varname = graph.addElement($style, { x:$x, y:$y }, '".addslashes($filename)."', '', '".$userinput."', '".$file_sinks[$file]."', ".(in_array($file, $vulnfiles) ? 1 : 0).");\n";
-
-				} else
-				{
-					// add to $i what is missing til new row is created
-					$i=$i+(4-($i%4));
-					$y+=30;
-					$style = 'scriptTemplate';
-				}
-			}	
 			
 			// build file list 
 			echo '<div id="filelistdiv"><table>';

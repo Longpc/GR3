@@ -15,9 +15,6 @@ include 'config/general.php';
 	}
 	?>
 	<script src="js/script.js"></script>
-	<script src="js/exploit.js"></script>
-	<script src="js/hotpatch.js"></script>
-	<script src="js/netron.js"></script>
 	<title>GR3 - Scanner for WEB vulnerabilities in PHP scripts</title>
 </head>
 <body>
@@ -56,14 +53,19 @@ include 'config/general.php';
 					?>
 				</select>
 			</td>
-			<td nowrap><input type="button" value="scan" style="width:100%" class="Button" onClick="scan(false);" title="start scan" /></td>
+			<td nowrap><input type="button" value="SCAN" style="width:100%" class="Button" onClick="scan(false);" title="start scan" /></td>
 		</tr>			
 		</table>
 		<div id="options" style="margin-top:-10px; display:none; text-align:center;" >
-			<input type="button" class="Button" style="width:50px" value="files" onClick="openWindow(5);eval(document.getElementById('filegraph_code').innerHTML);" title="show list of scanned files" />
-			<input type="button" class="Button" style="width:80px" value="user input" onClick="openWindow(4)" title="show list of user input" />
+			<input type="button" class="Button" style="width:50px" value="Files" onClick="openWindow(5);eval(document.getElementById('filegraph_code').innerHTML);" title="show list of scanned files" />
+			<input type="button" class="Button" style="width:80px" value="User input" onClick="openWindow(4)" title="show list of user input" />
 			
-			<input type="button" class="Button" style="width:80px" value="functions" onClick="openWindow(3);eval(document.getElementById('functiongraph_code').innerHTML);" title="show list of user-defined functions" />
+			<input type="button" class="Button" style="width:80px" value="Functions" onClick="openWindow(3);eval(document.getElementById('functiongraph_code').innerHTML);" title="show list of user-defined functions" />
+            
+            <input type="button" class="Button" style="width:80px" value="Save" onClick="" title="Save Scan Result to database" />
+            <!--TODO-->
+            <input type="button" class="Button" style="width:80px" value="Add Vul" onClick="" title="Add new sinks anf secu function of new vul" />
+            <!--TODO-->
 		</div>
 	</td>
 </tr>

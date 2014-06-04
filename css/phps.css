@@ -15,19 +15,6 @@ body, html {
 	color: black;
 }
 
-.userinput, .persistent {
-	list-style-type: disc;
-	color:white; 
-}
-.validated {
-	list-style-type: disc;
-	color:red; 
-}
-.functioninput {
-	list-style-type: disc;
-	color:yellow; 
-}
-
 .codebox {
 	margin-bottom: 10px;
 	background-color: #C4CDD1;
@@ -45,7 +32,7 @@ body, html {
 }
 .code, .vulntitle  { 
 	font-family: "Bitstream Vera Sans Mono", "Monaco", "Courier New", monospace;
-	font-size:9pt; 
+	font-size:10pt; 
 	color: #007700;
 }
 
